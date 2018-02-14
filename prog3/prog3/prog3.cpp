@@ -31,9 +31,9 @@ struct corporation
 
 /*~~~~~~~ PROTOTYPES ~~~~~~~~*/
 void getDivision(division*, ifstream &);
-void printDivision(division *, corporation *, int);
-void addDivision(division *, corporation *, int&);
-void printCorpSummary(corporation *, int);
+void printDivision(division *, corporation *);
+void addDivision(division *, corporation *);
+void printCorpSummary(corporation *);
 
 /*~~~~~~~ MAIN ~~~~~~~~*/
 int main()
@@ -41,24 +41,31 @@ int main()
 	//new new
 	corporation* p2corp = nullptr;
 	p2corp = new corporation;
+	p2corp->q1totals = 0;
+	p2corp->q2totals = 0;
+	p2corp->q3totals = 0;
+	p2corp->q4totals = 0;
+	p2corp->num_of_divisions = 0;
 
 	division* p2div = nullptr;
 	p2div = new division;
+	p2div->q1sales = 0;
+	p2div->q2sales = 0;
+	p2div->q3sales = 0;
+	p2div->q4sales = 0;
+
 
 	//infiles
 	ifstream infile;
 	infile.open("prog3.txt");
-
-	//declare
-	int sum = 0;
 
 	if (infile)
 	{
 		while (!infile.eof())
 		{
 			getDivision(p2div, infile);
-			printDivision(p2div, p2corp, sum);
-			addDivision(p2div, p2corp, sum);
+			printDivision(p2div, p2corp);
+			addDivision(p2div, p2corp);
 			infile.ignore();
 		}
 	}
@@ -67,7 +74,7 @@ int main()
 		cout << "Invalid file.\n";
 	}
 	cout << endl;
-	printCorpSummary(p2corp, sum);
+	printCorpSummary(p2corp);
 
 	//outfiles
 	infile.close();
@@ -104,10 +111,10 @@ void getDivision(division *p2div, ifstream &infile)
 // Class: CS 2020, Spring 2018
 // Parameters:	
 // Returns: void
-void printDivision(division *p2div, corporation *p2corp, int sum)
+void printDivision(division *p2div, corporation *p2corp)
 {
 	cout << setprecision(2) << fixed;
-	if (sum == 0)
+	if (p2corp->num_of_divisions == 0)
 	{
 		cout << setw(25) << left << "Division" << setw(15) << left << "Q1" << setw(15) << left << "Q2" <<
 			setw(15) << left << "Q3" << setw(15) << left << "Q4" << endl;
@@ -123,14 +130,14 @@ void printDivision(division *p2div, corporation *p2corp, int sum)
 // Programmer: Aaron Schlessman
 // Class: CS 2020, Spring 2018
 // Parameters:	
-// Returns: 
-void addDivision(division *p2div, corporation *p2corp, int &sum)
+// Returns: void
+void addDivision(division *p2div, corporation *p2corp)
 {
 	p2corp->q1totals += p2div->q1sales;
 	p2corp->q2totals += p2div->q2sales;
 	p2corp->q3totals += p2div->q3sales;
 	p2corp->q4totals += p2div->q4sales;
-	sum += p2corp->num_of_divisions++;
+	p2corp->num_of_divisions++;
 }
 
 
@@ -140,7 +147,7 @@ void addDivision(division *p2div, corporation *p2corp, int &sum)
 // Class: CS 2020, Spring 2018
 // Parameters:	
 // Returns: void
-void printCorpSummary(corporation *p2corp, int sum)
+void printCorpSummary(corporation *p2corp)
 {
 	double q1avg = 0;
 	double q2avg = 0;
@@ -148,31 +155,31 @@ void printCorpSummary(corporation *p2corp, int sum)
 	double q4avg = 0;
 	double totals = 0;
 	double qtrhigh = 0;
-	double qtrlow = 0;
+	double qtrlow = p2corp->q1totals;
 
-	q1avg = (p2corp->q1totals / sum);
-	q2avg = (p2corp->q2totals / sum);
-	q3avg = (p2corp->q3totals / sum);
-	q4avg = (p2corp->q4totals / sum);
+	q1avg = (p2corp->q1totals / p2corp->num_of_divisions);
+	q2avg = (p2corp->q2totals / p2corp->num_of_divisions);
+	q3avg = (p2corp->q3totals / p2corp->num_of_divisions);
+	q4avg = (p2corp->q4totals / p2corp->num_of_divisions);
 	totals = (p2corp->q1totals + p2corp->q2totals + p2corp->q3totals + p2corp->q4totals);
 
 	if (p2corp->q1totals > qtrhigh)
-		p2corp->q1totals = qtrhigh;
+		qtrhigh = p2corp->q1totals;
 	if (p2corp->q2totals > qtrhigh)
-		p2corp->q2totals = qtrhigh;
+		qtrhigh = p2corp->q2totals;
 	if (p2corp->q3totals > qtrhigh)
-		p2corp->q3totals = qtrhigh;
+		qtrhigh = p2corp->q3totals;
 	if (p2corp->q4totals > qtrhigh)
-		p2corp->q4totals = qtrhigh;
+		qtrhigh = p2corp->q4totals;
 
 	if (p2corp->q1totals < qtrlow)
-		p2corp->q1totals = qtrlow;
+		qtrlow = p2corp->q1totals;
 	if (p2corp->q2totals < qtrlow)
-		p2corp->q2totals = qtrlow;
+		qtrlow = p2corp->q2totals;
 	if (p2corp->q3totals < qtrlow)
-		p2corp->q3totals = qtrlow;
+		qtrlow = p2corp->q3totals;
 	if (p2corp->q4totals < qtrlow)
-		p2corp->q4totals = qtrlow;
+		qtrlow = p2corp->q4totals;
 
 	cout << setw(20) << left << "Corp Totals:" << setw(15) << p2corp->q1totals << setw(15) << p2corp->q2totals
 		<< setw(15) << p2corp->q3totals << setw(15) << p2corp->q4totals << endl;
