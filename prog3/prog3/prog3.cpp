@@ -41,7 +41,7 @@ int main()
 	//new new
 	corporation* p2corp = nullptr;
 	p2corp = new corporation;
-	p2corp->q1totals = 0;
+	p2corp->q1totals = 0;				//setting everything to 0
 	p2corp->q2totals = 0;
 	p2corp->q3totals = 0;
 	p2corp->q4totals = 0;
@@ -90,10 +90,11 @@ int main()
 }
 
 // Function: getDivision
-// Description: 
+// Description: add a new division
 // Programmer: Aaron Schlessman
 // Class: CS 2020, Spring 2018
-// Parameters:	
+// Parameters:	p2div structure
+//				infile read file
 // Returns: void
 void getDivision(division *p2div, ifstream &infile)
 {
@@ -106,10 +107,11 @@ void getDivision(division *p2div, ifstream &infile)
 
 
 // Function: printDivision
-// Description: 
+// Description: print tubular set of data to console
 // Programmer: Aaron Schlessman
 // Class: CS 2020, Spring 2018
-// Parameters:	
+// Parameters:	p2div structer of divisions
+//				p2corp structure of corporations
 // Returns: void
 void printDivision(division *p2div, corporation *p2corp)
 {
@@ -126,10 +128,11 @@ void printDivision(division *p2div, corporation *p2corp)
 
 
 // Function: addDivision
-// Description: 
+// Description: adds a division to the totals
 // Programmer: Aaron Schlessman
 // Class: CS 2020, Spring 2018
-// Parameters:	
+// Parameters:	p2div structure of divisions
+//				p2corp structure of corporations
 // Returns: void
 void addDivision(division *p2div, corporation *p2corp)
 {
@@ -142,13 +145,14 @@ void addDivision(division *p2div, corporation *p2corp)
 
 
 // Function: printCorpSummary
-// Description: 
+// Description: finds highest lowest and average and displays 
 // Programmer: Aaron Schlessman
 // Class: CS 2020, Spring 2018
-// Parameters:	
+// Parameters:	p2corp stucture of corporations
 // Returns: void
 void printCorpSummary(corporation *p2corp)
 {
+	//declaration
 	double q1avg = 0;
 	double q2avg = 0;
 	double q3avg = 0;
@@ -156,13 +160,15 @@ void printCorpSummary(corporation *p2corp)
 	double totals = 0;
 	double qtrhigh = 0;
 	double qtrlow = p2corp->q1totals;
-
+	
+	//maths for average
 	q1avg = (p2corp->q1totals / p2corp->num_of_divisions);
 	q2avg = (p2corp->q2totals / p2corp->num_of_divisions);
 	q3avg = (p2corp->q3totals / p2corp->num_of_divisions);
 	q4avg = (p2corp->q4totals / p2corp->num_of_divisions);
 	totals = (p2corp->q1totals + p2corp->q2totals + p2corp->q3totals + p2corp->q4totals);
 
+	//finds highest
 	if (p2corp->q1totals > qtrhigh)
 		qtrhigh = p2corp->q1totals;
 	if (p2corp->q2totals > qtrhigh)
@@ -172,6 +178,7 @@ void printCorpSummary(corporation *p2corp)
 	if (p2corp->q4totals > qtrhigh)
 		qtrhigh = p2corp->q4totals;
 
+	//finds lowest
 	if (p2corp->q1totals < qtrlow)
 		qtrlow = p2corp->q1totals;
 	if (p2corp->q2totals < qtrlow)
@@ -181,6 +188,7 @@ void printCorpSummary(corporation *p2corp)
 	if (p2corp->q4totals < qtrlow)
 		qtrlow = p2corp->q4totals;
 
+	//cout section
 	cout << setw(20) << left << "Corp Totals:" << setw(15) << p2corp->q1totals << setw(15) << p2corp->q2totals
 		<< setw(15) << p2corp->q3totals << setw(15) << p2corp->q4totals << endl;
 	cout << setw(20) << left << "Avg Qtr Sales:" << setw(15) << q1avg << setw(15) << q2avg << setw(15)
